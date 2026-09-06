@@ -1,0 +1,51 @@
+schema_version: 1
+
+context:
+  name: fortio
+  version: "0.4"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/fortio-${{ version }}.tar.gz
+  sha256: e143fbb8cc2644550b3b08ecef62eae190daf82377b5527a68d04037be934650
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - numpy
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - fortio
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+
+about:
+  license: GPL-2.0-only
+  license_file: LICENSE
+  summary: A Python IO for Fortran Unformatted Binary File with Variable-Length Records.
+  description: |
+    A Python IO for Fortran Unformatted Binary File with Variable-Length
+    Records.
+  homepage: https://github.com/syrte/fortio/
+  repository: https://github.com/syrte/fortio/
+  documentation: https://github.com/syrte/fortio/
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
